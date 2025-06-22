@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>F1 Predictor</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 50%, #0f0f0f 100%);
+            min-height: 100vh;
+            color: white;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Animated background pattern */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                radial-gradient(circle at 20% 20%, rgba(255, 69, 0, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(255, 20, 147, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 40% 60%, rgba(0, 191, 255, 0.05) 0%, transparent 50%);
+            animation: backgroundFloat 20s ease-in-out infinite;
+            z-index: -1;
+        }
+
+        @keyframes backgroundFloat {
+            0%, 100% { transform: translate(0, 0) rotate(0deg); }
+            33% { transform: translate(-20px, -20px) rotate(1deg); }
+            66% { transform: translate(20px, -10px) rotate(-1deg); }
+        }
+
+        .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            padding: 20px;
+            text-align: center;
+            position: relative;
+            z-index: 1;
+        }
+
+        .brand {
+            font-size: 3.5rem;
+            font-weight: 300;
+            letter-spacing: 8px;
+            margin-bottom: 1rem;
+            background: linear-gradient(45deg, #ff4500, #ff1493, #00bfff);
+            background-size: 300% 300%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: gradientShift 4s ease-in-out infinite;
+        }
+
+        @keyframes gradientShift {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+
+        .tagline {
+            font-size: 1.1rem;
+            color: #888;
+            margin-bottom: 3rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        .hero-title {
+            font-size: 4rem;
+            font-weight: 900;
+            letter-spacing: 4px;
+            margin-bottom: 2rem;
+            text-transform: uppercase;
+            line-height: 1.1;
+            background: linear-gradient(45deg, #ffffff, #cccccc);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero-subtitle {
+            font-size: 1.5rem;
+            font-weight: 300;
+            color: #aaa;
+            margin-bottom: 4rem;
+            letter-spacing: 1px;
+        }
+
+        .prediction-button {
+            position: relative;
+            background: linear-gradient(45deg, #ff4500, #ff1493, #00bfff);
+            background-size: 300% 300%;
+            border: none;
+            border-radius: 50px;
+            padding: 20px 60px;
+            font-size: 1.4rem;
+            font-weight: 600;
+            color: white;
+            cursor: pointer;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            transition: all 0.3s ease;
+            animation: buttonGlow 3s ease-in-out infinite, gradientShift 4s ease-in-out infinite;
+            box-shadow: 
+                0 0 30px rgba(255, 69, 0, 0.3),
+                0 0 60px rgba(255, 20, 147, 0.2),
+                0 0 90px rgba(0, 191, 255, 0.1);
+        }
+
+        @keyframes buttonGlow {
+            0%, 100% { 
+                box-shadow: 
+                    0 0 30px rgba(255, 69, 0, 0.4),
+                    0 0 60px rgba(255, 20, 147, 0.3),
+                    0 0 90px rgba(0, 191, 255, 0.2);
+                transform: scale(1);
+            }
+            50% { 
+                box-shadow: 
+                    0 0 40px rgba(255, 69, 0, 0.6),
+                    0 0 80px rgba(255, 20, 147, 0.4),
+                    0 0 120px rgba(0, 191, 255, 0.3);
+                transform: scale(1.05);
+            }
+        }
+
+        .prediction-button:hover {
+            transform: scale(1.1);
+            box-shadow: 
+                0 0 50px rgba(255, 69, 0, 0.6),
+                0 0 100px rgba(255, 20, 147, 0.4),
+                0 0 150px rgba(0, 191, 255, 0.3);
+        }
+
+        .prediction-button:active {
+            transform: scale(0.95);
+        }
+
+        /* Racing stripes animation */
+        .racing-lines {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .racing-line {
+            position: absolute;
+            width: 2px;
+            height: 100%;
+            background: linear-gradient(to bottom, transparent, rgba(255, 255, 255, 0.1), transparent);
+            animation: racingMove 8s linear infinite;
+        }
+
+        .racing-line:nth-child(1) { left: 10%; animation-delay: 0s; }
+        .racing-line:nth-child(2) { left: 30%; animation-delay: 2s; }
+        .racing-line:nth-child(3) { left: 70%; animation-delay: 4s; }
+        .racing-line:nth-child(4) { left: 90%; animation-delay: 6s; }
+
+        @keyframes racingMove {
+            0% { transform: translateY(-100%); opacity: 0; }
+            50% { opacity: 1; }
+            100% { transform: translateY(100vh); opacity: 0; }
+        }
+
+        .header {
+            position: fixed;
+            top: 0;
+            right: 0;
+            padding: 30px;
+            z-index: 1000;
+        }
+
+        .about-button {
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            border-radius: 30px;
+            padding: 12px 24px;
+            color: white;
+            text-decoration: none;
+            font-size: 1rem;
+            font-weight: 500;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+            cursor: pointer;
+        }
+
+        .about-button:hover {
+            background: rgba(255, 255, 255, 0.2);
+            border-color: rgba(255, 69, 0, 0.6);
+            box-shadow: 0 0 20px rgba(255, 69, 0, 0.3);
+            transform: translateY(-2px);
+        }
+
+        @media (max-width: 768px) {
+            .brand {
+                font-size: 2.5rem;
+                letter-spacing: 4px;
+            }
+            
+            .hero-title {
+                font-size: 2.5rem;
+                letter-spacing: 2px;
+            }
+            
+            .hero-subtitle {
+                font-size: 1.2rem;
+            }
+            
+            .prediction-button {
+                padding: 15px 40px;
+                font-size: 1.2rem;
+            }
+
+            .header {
+                padding: 20px;
+            }
+
+            .about-button {
+                padding: 10px 20px;
+                font-size: 0.9rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <a href="#" class="about-button" onclick="window.location.href='/about'">About Me</a>
+    </div>
+
+    <div class="racing-lines">
+        <div class="racing-line"></div>
+        <div class="racing-line"></div>
+        <div class="racing-line"></div>
+        <div class="racing-line"></div>
+    </div>
+
+    <div class="container">
+        <h1 class="brand">F1 PREDICTOR</h1>
+        <p class="tagline">Powered by Me :)</p>
+        
+        <h2 class="hero-title">RACE PREDICTIONS</h2>
+        <p class="hero-subtitle">Turning your wild race guesses into slightly less wild AI predictions</p>
+        
+        <button class="prediction-button" onclick="window.location.href='/predict'">PREDICT NOW</button>
+    </div>
+
+    <script>
+        function startPrediction() {
+            // Add click animation
+            const button = document.querySelector('.prediction-button');
+            button.style.transform = 'scale(0.95)';
+            
+            setTimeout(() => {
+                button.style.transform = 'scale(1.05)';
+                // Here you would typically navigate to prediction page or open modal
+                alert('Starting F1 Race Prediction...');
+            }, 150);
+            
+            setTimeout(() => {
+                button.style.transform = 'scale(1)';
+            }, 300);
+        }
+
+        function showAbout() {
+            // Here you would typically navigate to about page or open modal
+            alert('About Me section - Add your information here!');
+        }
+
+        // Add some interactive particles on mouse move
+        document.addEventListener('mousemove', (e) => {
+            const particle = document.createElement('div');
+            particle.style.position = 'fixed';
+            particle.style.width = '4px';
+            particle.style.height = '4px';
+            particle.style.background = 'rgba(255, 69, 0, 0.6)';
+            particle.style.borderRadius = '50%';
+            particle.style.left = e.clientX + 'px';
+            particle.style.top = e.clientY + 'px';
+            particle.style.pointerEvents = 'none';
+            particle.style.zIndex = '1000';
+            document.body.appendChild(particle);
+            
+            setTimeout(() => {
+                particle.remove();
+            }, 1000);
+            
+            // Animate particle
+            particle.style.transition = 'all 1s ease-out';
+            setTimeout(() => {
+                particle.style.transform = 'scale(0)';
+                particle.style.opacity = '0';
+            }, 10);
+        });
+    </script>
+</body>
+</html>

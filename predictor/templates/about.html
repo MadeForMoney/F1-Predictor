@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Me - F1 Predictor</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 50%, #0f0f0f 100%);
+            min-height: 100vh;
+            color: white;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Animated background pattern */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                radial-gradient(circle at 20% 20%, rgba(255, 69, 0, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(255, 20, 147, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 40% 60%, rgba(0, 191, 255, 0.05) 0%, transparent 50%);
+            animation: backgroundFloat 20s ease-in-out infinite;
+            z-index: -1;
+        }
+
+        @keyframes backgroundFloat {
+            0%, 100% { transform: translate(0, 0) rotate(0deg); }
+            33% { transform: translate(-20px, -20px) rotate(1deg); }
+            66% { transform: translate(20px, -10px) rotate(-1deg); }
+        }
+
+        .header-logo-wrapper {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            width: 220px;
+            z-index: 9999;
+        }
+
+        .header-logo {
+            width: 100%;
+            background-color: rgba(0, 0, 0, 0.85);
+            border-radius: 10px;
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            box-shadow: 0 0 15px rgba(255, 0, 0, 0.7);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .header-logo:hover {
+            box-shadow: 0 0 25px rgba(255, 0, 0, 0.9);
+            transform: translateY(-2px);
+        }
+
+        .tr-txt-top p {
+            font-weight: 800;
+            font-size: 18px;
+            color: #ff4d4d;
+            margin: 0;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .radio-bars-wrapper {
+            display: flex;
+            justify-content: center;
+            align-items: flex-end;
+            width: 100%;
+            height: 25px;
+            gap: 3px;
+            margin-top: 8px;
+        }
+
+        .radio-bar {
+            width: 5px;
+            background-color: #ff0000;
+            animation: barAnim 1s infinite ease-in-out;
+        }
+
+        .radio-bar:nth-child(odd) {
+            animation-delay: 0.2s;
+        }
+
+        .radio-bar:nth-child(even) {
+            animation-delay: 0.4s;
+        }
+
+        @keyframes barAnim {
+            0%, 100% { height: 4px; }
+            50% { height: 20px; }
+        }
+
+        .separator-line {
+            width: 100%;
+            height: 1px;
+            background-color: #ff4d4d;
+            margin: 10px 0 6px;
+        }
+
+        .wac-wrapper {
+            min-height: 20px;
+        }
+
+        .wac-wrapper p {
+            color: #ffffff;
+            font-size: 12px;
+            margin: 2px 0;
+            text-align: center;
+            font-style: italic;
+            white-space: nowrap;
+        }
+
+        .header {
+            position: fixed;
+            top: 0;
+            right: 0;
+            padding: 30px;
+            z-index: 1000;
+        }
+
+        .home-button {
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            border-radius: 30px;
+            padding: 12px 24px;
+            color: white;
+            text-decoration: none;
+            font-size: 1rem;
+            font-weight: 500;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+            cursor: pointer;
+        }
+
+        .home-button:hover {
+            background: rgba(255, 255, 255, 0.2);
+            border-color: rgba(255, 69, 0, 0.6);
+            box-shadow: 0 0 20px rgba(255, 69, 0, 0.3);
+            transform: translateY(-2px);
+        }
+
+        .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            padding: 100px 20px 20px;
+            text-align: center;
+            position: relative;
+            z-index: 1;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .about-title {
+            font-size: 4rem;
+            font-weight: 900;
+            letter-spacing: 4px;
+            margin-bottom: 2rem;
+            text-transform: uppercase;
+            background: linear-gradient(45deg, #ff4500, #ff1493, #00bfff);
+            background-size: 300% 300%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: gradientShift 4s ease-in-out infinite;
+        }
+
+        @keyframes gradientShift {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+
+        .about-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            width: 100%;
+            margin-top: 3rem;
+        }
+
+        .about-section {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(20px);
+            border-radius: 20px;
+            padding: 3rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .about-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, #ff4500, #ff1493, #00bfff);
+            background-size: 300% 100%;
+            animation: gradientShift 3s ease-in-out infinite;
+        }
+
+        .about-section:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(255, 69, 0, 0.2);
+            border-color: rgba(255, 69, 0, 0.3);
+        }
+
+        .section-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #ff4500;
+            margin-bottom: 1.5rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .section-content {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            color: #cccccc;
+            text-align: left;
+        }
+
+        .skills-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .skill-item {
+            background: rgba(255, 69, 0, 0.1);
+            border: 1px solid rgba(255, 69, 0, 0.3);
+            border-radius: 10px;
+            padding: 1rem;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .skill-item:hover {
+            background: rgba(255, 69, 0, 0.2);
+            transform: scale(1.05);
+        }
+
+        .contact-links {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1.5rem;
+            flex-wrap: wrap;
+        }
+
+        .contact-link {
+            background: linear-gradient(45deg, #ff4500, #ff1493);
+            border: none;
+            border-radius: 25px;
+            padding: 10px 20px;
+            color: white;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .contact-link:hover {
+            transform: scale(1.1);
+            box-shadow: 0 5px 15px rgba(255, 69, 0, 0.4);
+        }
+
+        /* Racing stripes animation */
+        .racing-lines {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .racing-line {
+            position: absolute;
+            width: 2px;
+            height: 100%;
+            background: linear-gradient(to bottom, transparent, rgba(255, 255, 255, 0.1), transparent);
+            animation: racingMove 8s linear infinite;
+        }
+
+        .racing-line:nth-child(1) { left: 10%; animation-delay: 0s; }
+        .racing-line:nth-child(2) { left: 30%; animation-delay: 2s; }
+        .racing-line:nth-child(3) { left: 70%; animation-delay: 4s; }
+        .racing-line:nth-child(4) { left: 90%; animation-delay: 6s; }
+
+        @keyframes racingMove {
+            0% { transform: translateY(-100%); opacity: 0; }
+            50% { opacity: 1; }
+            100% { transform: translateY(100vh); opacity: 0; }
+        }
+
+        @media (max-width: 768px) {
+            .about-title {
+                font-size: 2.5rem;
+                letter-spacing: 2px;
+            }
+            
+            .about-content {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+            
+            .about-section {
+                padding: 2rem;
+            }
+            
+            .skills-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .contact-links {
+                justify-content: center;
+            }
+
+            .header {
+                padding: 20px;
+            }
+
+            .home-button {
+                padding: 10px 20px;
+                font-size: 0.9rem;
+            }
+
+            .header-logo-wrapper {
+                width: 180px;
+                top: 15px;
+                left: 15px;
+            }
+
+            .tr-txt-top p {
+                font-size: 14px;
+            }
+
+            .radio-bars-wrapper {
+                height: 20px;
+            }
+
+            .wac-wrapper p {
+                font-size: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header-logo-wrapper">
+        <div class="header-logo" onclick="location.href='/'">
+            <div class="tr-txt-top" id="txt-top1">
+                <p>TEAM RADIO</p>
+            </div>
+            <div class="radio-bars-wrapper">
+                <div class="radio-bar"></div>
+                <div class="radio-bar"></div>
+                <div class="radio-bar"></div>
+                <div class="radio-bar"></div>
+                <div class="radio-bar"></div>
+                <div class="radio-bar"></div>
+                <div class="radio-bar"></div>
+                <div class="radio-bar"></div>
+            </div>
+            <div class="separator-line"></div>
+            <div class="wac-wrapper">
+                <p>"Plan...???"</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="header">
+        <a href="#" class="home-button" onclick="window.location.href='/'">Home</a>
+    </div>
+
+    <div class="racing-lines">
+        <div class="racing-line"></div>
+        <div class="racing-line"></div>
+        <div class="racing-line"></div>
+        <div class="racing-line"></div>
+    </div>
+
+    <div class="container">
+        <h1 class="about-title">About Me</h1>
+        
+        <div class="about-content">
+            <div class="about-section">
+                <h2 class="section-title">Who I Am</h2>
+                <div class="section-content">
+                    <p>I'm a passionate Formula 1 enthusiast and data scientist who combines the thrill of racing with the power of predictive analytics. With years of experience in machine learning and a deep love for motorsport, I've created this platform to bring cutting-edge F1 race predictions to fans worldwide.</p>
+                    <p>My journey began watching races as a kid, and evolved into analyzing telemetry data, driver performance metrics, and weather patterns to predict race outcomes with remarkable accuracy.</p>
+                </div>
+            </div>
+
+            
+
+            <div class="about-section">
+                <h2 class="section-title">The Project</h2>
+                <div class="section-content">
+                    <p>F1 Predictor is a chaotic yet clever mashup of machine learning and motorsport obsession. 
+                      Built by an AI & Data Science student who treats Grand Prix weekends like sacred rituals, this project uses driver names, starting positions, 
+                      and race tracks to predict race outcomes — with a healthy mix of math, madness, and memes. It’s fast, flashy, 
+                      and probably more reliable than a Ferrari pit wall on a Sunday.
+                    </p>
+
+                </div>
+            </div>
+
+            <div class="about-section">
+                <h2 class="section-title">Get In Touch</h2>
+                <div class="section-content">
+                    <p>I'm always excited to discuss F1, data science, or potential collaborations. Feel free to reach out through any of these channels:</p>
+                    <div class="contact-links">
+                        <a href="mailto:your-email@example.com" class="contact-link">
+                            📧 Email
+                        </a>
+                        <a href="https://linkedin.com/in/yourprofile" class="contact-link">
+                            💼 LinkedIn
+                        </a>
+                        <a href="https://github.com/yourusername" class="contact-link">
+                            💻 GitHub
+                        </a>
+                        <a href="https://twitter.com/yourusername" class="contact-link">
+                            🐦 Twitter
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function goHome() {
+            // Navigate back to home page
+            alert('Navigating to Home...');
+            // In a real application, you would use: window.location.href = '/';
+        }
+
+        // Team Radio typing effect
+        const phrases = ["\"Copy that\"", "\"Box, box, box\"", "\"We are checking\"","\"Must be the Water!\"","\"Press K1\""];
+        const wacWrapper = document.querySelector('.wac-wrapper');
+        let i = 0;
+        let j = 0;
+        let isDeleting = false;
+        let currentText = '';
+        let speed = 100;
+
+        function typeLoop() {
+            const fullText = phrases[i];
+            if (isDeleting) {
+                currentText = fullText.substring(0, j--);
+            } else {
+                currentText = fullText.substring(0, j++);
+            }
+            wacWrapper.innerHTML = `<p>${currentText}</p>`;
+
+            if (!isDeleting && j === fullText.length + 1) {
+                isDeleting = true;
+                speed = 50;
+                setTimeout(typeLoop, 1000);
+            } else if (isDeleting && j === 0) {
+                isDeleting = false;
+                i = (i + 1) % phrases.length;
+                speed = 100;
+                setTimeout(typeLoop, 500);
+            } else {
+                setTimeout(typeLoop, speed);
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', typeLoop);
+
+        // Add some interactive particles on mouse move
+        document.addEventListener('mousemove', (e) => {
+            const particle = document.createElement('div');
+            particle.style.position = 'fixed';
+            particle.style.width = '3px';
+            particle.style.height = '3px';
+            particle.style.background = 'rgba(255, 69, 0, 0.6)';
+            particle.style.borderRadius = '50%';
+            particle.style.left = e.clientX + 'px';
+            particle.style.top = e.clientY + 'px';
+            particle.style.pointerEvents = 'none';
+            particle.style.zIndex = '1000';
+            document.body.appendChild(particle);
+            
+            setTimeout(() => {
+                particle.remove();
+            }, 1000);
+            
+            // Animate particle
+            particle.style.transition = 'all 1s ease-out';
+            setTimeout(() => {
+                particle.style.transform = 'scale(0)';
+                particle.style.opacity = '0';
+            }, 10);
+        });
+    </script>
+</body>
+</html>

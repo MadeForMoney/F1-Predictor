@@ -1,0 +1,13 @@
+# Default to LF for text files
+* text=auto
+
+# Force LF for shell scripts (Unix-friendly)
+*.sh text eol=lf
+
+# Force CRLF for Windows batch files
+*.bat text eol=crlf
+
+# Prevent line ending conversion for binary files
+*.png binary
+*.jpg binary
+*.pdf binary

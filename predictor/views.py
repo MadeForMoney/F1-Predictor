@@ -10,6 +10,57 @@ from .encoders import le_driver, le_track, le_team  # if used
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 model = joblib.load(os.path.join(BASE_DIR, "xgboost_model.pkl"))
 
+
+def explain_prediction(features_df):
+    explanation = []
+    confi=[]
+
+    grid = features_df["Starting Grid"].values[0]
+    driver_avg = features_df["Driver_Avg_Pos"].values[0]
+    track_avg = features_df["Driver_Track_History"].values[0]
+    team_rel = features_df["TeamReliability"].values[0]
+    driver_conf = features_df["DriverConfidence"].values[0]
+    difficulty = features_df["Overtake Difficulty"].values[0]
+    is_top_team = features_df["IsTopTeam"].values[0]
+
+    low_confidence = False  
+
+    # Conditions for explanation
+    if grid <= 5:
+        explanation.append("Good starting grid position.")
+    elif grid >= 15 and difficulty > 0.6:
+        explanation.append("Hard to overtake from the back.")
+        low_confidence = True
+
+    if driver_avg <= 6:
+        explanation.append("Consistent high performer.")
+    if track_avg <= 5:
+        explanation.append("Historically strong at this track.")
+
+    if team_rel > 0.8:
+        explanation.append("Reliable constructor.")
+    elif team_rel < 0.5:
+        low_confidence = True
+
+    if driver_conf > 0.9:
+        explanation.append("Driver is in top form.")
+    elif driver_conf < 0.7:
+        low_confidence = True
+
+    if is_top_team:
+        explanation.append("Top-tier team support.")
+
+    if not explanation:
+        explanation.append("No standout factors.")
+
+    # 💬 Add disclaimer if confidence is low
+    if low_confidence:
+        confi.append("⚠️ Prediction confidence is lower due to starting position or form.")
+
+    return " ".join(explanation),confi
+
+
+
 def predict_position(request):
     prediction = None
     csv_path = os.path.join(BASE_DIR, "feat_eng_f1.csv")
@@ -62,7 +113,14 @@ class PredictAPIView(APIView):
 
         # Predict
         prediction = model.predict(features)[0]
+        reason,confi = explain_prediction(features)
+
 
         return Response({
-            "predicted_position": round(prediction, 2)
+            "predicted_position": round(prediction, 2),
+            "explanation": reason,
+            "Confidence":confi
         })
+    
+
+

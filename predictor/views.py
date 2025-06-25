@@ -38,3 +38,31 @@ def about_us(request):
 
 def home_page(request):
     return render(request,'f1_index.html')
+
+
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework import status
+
+
+class PredictAPIView(APIView):
+    def post(self, request):
+        data = request.data
+        driver = data.get("driver")
+        track = data.get("track")
+        grid = data.get("starting_grid")
+
+        if not (driver and track and grid):
+            return Response({"error": "Missing data"}, status=status.HTTP_400_BAD_REQUEST)
+
+        # Generate input features
+        csv_path = os.path.join(BASE_DIR, "feat_eng_f1.csv")
+        df = pd.read_csv(csv_path)
+        features = generate_features_for_inference(driver, track, int(grid), df, year=2025)
+
+        # Predict
+        prediction = model.predict(features)[0]
+
+        return Response({
+            "predicted_position": round(prediction, 2)
+        })

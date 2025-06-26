@@ -28,7 +28,7 @@ def explain_prediction(features_df):
     # Conditions for explanation
     if grid <= 5:
         explanation.append("Good starting grid position.")
-    elif grid >= 15 and difficulty > 0.6:
+    elif grid >= 15 and difficulty > 0.2:
         explanation.append("Hard to overtake from the back.")
         low_confidence = True
 
@@ -56,13 +56,19 @@ def explain_prediction(features_df):
     # 💬 Add disclaimer if confidence is low
     if low_confidence:
         confi.append("⚠️ Prediction confidence is lower due to starting position or form.")
+    else:
+        confi.append("The Model Confidence is Normal")
 
-    return " ".join(explanation),confi
+    sentences = [sentence.strip() for item in explanation for sentence in item.split('.') if sentence.strip()]
+
+    return sentences,confi
 
 
 
 def predict_position(request):
     prediction = None
+    explanation=[]
+    confidence=[]
     csv_path = os.path.join(BASE_DIR, "feat_eng_f1.csv")
     df = pd.read_csv(csv_path)
     drivers = sorted(df["Driver"].unique())
@@ -76,11 +82,13 @@ def predict_position(request):
         features = generate_features_for_inference(driver, track, grid, df, year=2025)
         prediction = model.predict(features)[0]
         prediction=np.floor(prediction)
-
+        explanation, confidence = explain_prediction(features)
     return render(request, "f1_form.html", {
         "drivers": drivers,
         "tracks": tracks,
-        "prediction": prediction
+        "prediction": prediction,
+        "explanation": explanation,
+        "confidence": confidence
     })
 
 
@@ -121,6 +129,6 @@ class PredictAPIView(APIView):
             "explanation": reason,
             "Confidence":confi
         })
-    
+
 
 

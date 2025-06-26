@@ -40,19 +40,32 @@
       }
     }
 
+    /* Enhanced Wheel Spinner with Real F1 Tire Image */
     .wheel-spinner {
       position: fixed;
       top: 50%;
       left: 50%;
-      width: 100px;
-      height: 100px;
+      width: 150px;
+      height: 150px;
       transform: translate(-50%, -50%);
-      background-image: url('https://www.pngmart.com/files/22/F1-Car-Tire-PNG.png');
-      background-size: cover;
-      background-repeat: no-repeat;
       z-index: 9999;
-      animation: spin 1s linear infinite;
       display: none;
+      animation: spin 1s linear infinite;
+      background-image: url('https://e7.pngegg.com/pngimages/240/215/png-clipart-2017-abu-dhabi-grand-prix-2017-formula-one-world-championship-car-williams-martini-racing-formula-one-tyres-car-car-transport.png');
+      background-size: contain;
+      background-repeat: no-repeat;
+      background-position: center;
+      filter: drop-shadow(0 0 20px rgba(255, 0, 0, 0.6));
+    }
+
+    .wheel-spinner::before {
+      content: '';
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      background: radial-gradient(circle, transparent 40%, rgba(255, 0, 0, 0.1) 60%, rgba(255, 0, 0, 0.2) 80%, transparent 100%);
+      border-radius: 50%;
+      animation: spin 1s linear infinite reverse;
     }
 
     @keyframes spin {
@@ -62,6 +75,370 @@
       100% {
         transform: translate(-50%, -50%) rotate(360deg);
       }
+    }
+
+    /* Loading text animation */
+    .loading-text {
+      position: fixed;
+      top: 60%;
+      left: 50%;
+      transform: translateX(-50%);
+      color: #fff;
+      font-size: 18px;
+      font-weight: bold;
+      text-shadow: 0 0 10px rgba(255, 0, 0, 0.8);
+      z-index: 9999;
+      display: none;
+      animation: pulse 1.5s ease-in-out infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% {
+        opacity: 0.6;
+        transform: translateX(-50%) scale(0.95);
+      }
+      50% {
+        opacity: 1;
+        transform: translateX(-50%) scale(1.05);
+      }
+    }
+
+    /* Form submission animations */
+    .form-submitting {
+      animation: formBlur 0.5s ease-out forwards;
+    }
+
+    @keyframes formBlur {
+      0% {
+        filter: blur(0px);
+        transform: scale(1);
+      }
+      100% {
+        filter: blur(2px);
+        transform: scale(0.98);
+      }
+    }
+
+    /* Button press animation */
+    .button-pressed {
+      animation: buttonPress 0.3s ease-out;
+    }
+
+    @keyframes buttonPress {
+      0% {
+        transform: scale(1);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+      }
+      50% {
+        transform: scale(0.95);
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+      }
+      100% {
+        transform: scale(1);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+      }
+    }
+
+    /* Racing stripes animation */
+    .racing-stripes {
+      position: fixed;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: repeating-linear-gradient(
+        45deg,
+        transparent,
+        transparent 20px,
+        rgba(255, 0, 0, 0.1) 20px,
+        rgba(255, 0, 0, 0.1) 40px
+      );
+      z-index: 9998;
+      display: none;
+      animation: racingStripes 2s linear infinite;
+    }
+
+    @keyframes racingStripes {
+      0% {
+        left: -100%;
+      }
+      100% {
+        left: 100%;
+      }
+    }
+
+    /* Speedometer Styles - Semicircle */
+    .speedometer-container {
+      position: absolute;
+      right: 30px;
+      top: 50%;
+      transform: translateY(-50%);
+      z-index: 9999;
+      display: none;
+      animation: speedometerFadeIn 1.5s ease-out forwards;
+    }
+
+    @keyframes speedometerFadeIn {
+      0% {
+        opacity: 0;
+        transform: translateY(-50%) scale(0.8);
+      }
+      60% {
+        transform: translateY(-50%) scale(1.05);
+      }
+      100% {
+        opacity: 1;
+        transform: translateY(-50%) scale(1);
+      }
+    }
+
+    .speedometer {
+      width: 200px;
+      height: 120px;
+      position: relative;
+      background: radial-gradient(circle at 50% 100%, 
+        rgba(15, 15, 15, 0.95) 0%, 
+        rgba(25, 25, 25, 0.9) 40%, 
+        rgba(10, 10, 10, 0.85) 70%, 
+        transparent 100%);
+      border: 6px solid #444;
+      border-bottom: none;
+      border-radius: 200px 200px 0 0;
+      box-shadow: 
+        0 0 30px rgba(0,0,0,0.8),
+        inset 0 0 20px rgba(255,255,255,0.1),
+        0 0 60px rgba(255,255,255,0.05);
+      animation: speedometerGlow 2s ease-in-out infinite alternate;
+    }
+
+    @keyframes speedometerGlow {
+      0% {
+        box-shadow: 
+          0 0 30px rgba(0,0,0,0.8),
+          inset 0 0 20px rgba(255,255,255,0.1),
+          0 0 60px rgba(255,255,255,0.05);
+      }
+      100% {
+        box-shadow: 
+          0 0 40px rgba(0,0,0,0.9),
+          inset 0 0 25px rgba(255,255,255,0.15),
+          0 0 80px rgba(255,255,255,0.08);
+      }
+    }
+
+    .speedometer-arc {
+      width: 160px;
+      height: 80px;
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      background: linear-gradient(
+        to right,
+        #ff1a1a 0%,
+        #ff4d4d 25%,
+        #ffaa00 45%,
+        #66ff66 75%,
+        #00ff00 100%
+      );
+      border-radius: 160px 160px 0 0;
+      mask: radial-gradient(circle at 50% 100%, transparent 50px, black 55px, black 70px, transparent 75px);
+      -webkit-mask: radial-gradient(circle at 50% 100%, transparent 50px, black 55px, black 70px, transparent 75px);
+      animation: arcPulse 3s ease-in-out infinite;
+    }
+
+    @keyframes arcPulse {
+      0%, 100% {
+        filter: brightness(1) saturate(1);
+      }
+      50% {
+        filter: brightness(1.2) saturate(1.3);
+      }
+    }
+
+    /* Speedometer tick marks */
+    .speedometer::before {
+      content: '';
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      border-radius: 200px 200px 0 0;
+      background: repeating-conic-gradient(
+        from 0deg at 50% 100%,
+        transparent 0deg,
+        rgba(255,255,255,0.3) 2deg,
+        transparent 4deg,
+        transparent 18deg
+      );
+      mask: radial-gradient(circle at 50% 100%, transparent 60px, black 65px, black 75px, transparent 80px);
+      -webkit-mask: radial-gradient(circle at 50% 100%, transparent 60px, black 65px, black 75px, transparent 80px);
+    }
+
+    .speedometer-needle {
+      width: 4px;
+      height: 60px;
+      background: linear-gradient(to top, #fff 0%, #ffff00 50%, #fff 100%);
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      transform-origin: bottom center;
+      transform: translateX(-50%) rotate(-90deg);
+      transition: all 2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+      border-radius: 2px;
+      box-shadow: 
+        0 0 10px rgba(255,255,255,0.8),
+        0 0 20px rgba(255,255,0,0.4);
+      animation: needleGlow 2s ease-in-out infinite alternate;
+    }
+
+    @keyframes needleGlow {
+      0% {
+        box-shadow: 
+          0 0 10px rgba(255,255,255,0.8),
+          0 0 20px rgba(255,255,0,0.4);
+      }
+      100% {
+        box-shadow: 
+          0 0 15px rgba(255,255,255,1),
+          0 0 30px rgba(255,255,0,0.6);
+      }
+    }
+
+    .speedometer-center {
+      width: 18px;
+      height: 9px;
+      background: radial-gradient(circle, #fff 0%, #ddd 70%, #aaa 100%);
+      border-radius: 18px 18px 0 0;
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      box-shadow: 
+        0 0 10px rgba(255,255,255,0.5),
+        inset 0 0 5px rgba(0,0,0,0.3);
+      z-index: 10;
+    }
+
+    .speedometer-label {
+      position: absolute;
+      bottom: -25px;
+      left: 50%;
+      transform: translateX(-50%);
+      color: #fff;
+      font-weight: bold;
+      font-size: 16px;
+      text-align: center;
+      text-shadow: 
+        0 0 10px rgba(0,0,0,0.8),
+        0 0 20px currentColor;
+      animation: labelPulse 2s ease-in-out infinite alternate;
+      white-space: nowrap;
+    }
+
+    @keyframes labelPulse {
+      0% {
+        text-shadow: 
+          0 0 10px rgba(0,0,0,0.8),
+          0 0 20px currentColor;
+      }
+      100% {
+        text-shadow: 
+          0 0 15px rgba(0,0,0,0.9),
+          0 0 30px currentColor,
+          0 0 40px currentColor;
+      }
+    }
+
+    .confidence-text {
+      position: absolute;
+      top: -35px;
+      left: 50%;
+      transform: translateX(-50%);
+      color: #fff;
+      font-size: 14px;
+      font-weight: 600;
+      text-align: center;
+      text-shadow: 0 0 8px rgba(0,0,0,0.8);
+      letter-spacing: 1px;
+    }
+
+    /* Confidence states - Red and Green zones */
+    .speedometer.warning .speedometer-needle {
+      transform: translateX(-50%) rotate(-45deg);
+      background: linear-gradient(to top, #fff 0%, #ff4444 50%, #fff 100%);
+      animation: warningNeedleGlow 1.5s ease-in-out infinite alternate;
+    }
+
+    @keyframes warningNeedleGlow {
+      0% {
+        box-shadow: 
+          0 0 15px rgba(255,68,68,0.8),
+          0 0 30px rgba(255,0,0,0.6);
+      }
+      100% {
+        box-shadow: 
+          0 0 25px rgba(255,68,68,1),
+          0 0 40px rgba(255,0,0,0.8);
+      }
+    }
+
+    .speedometer.normal .speedometer-needle {
+      transform: translateX(-50%) rotate(45deg);
+      background: linear-gradient(to top, #fff 0%, #44ff44 50%, #fff 100%);
+      animation: normalNeedleGlow 2s ease-in-out infinite alternate;
+    }
+
+    @keyframes normalNeedleGlow {
+      0% {
+        box-shadow: 
+          0 0 15px rgba(68,255,68,0.8),
+          0 0 30px rgba(0,255,0,0.6);
+      }
+      100% {
+        box-shadow: 
+          0 0 25px rgba(68,255,68,1),
+          0 0 40px rgba(0,255,0,0.8);
+      }
+    }
+
+    /* Enhanced warning state animation */
+    .speedometer.warning {
+      animation: warningSpeedometerGlow 1.5s ease-in-out infinite alternate;
+    }
+
+    @keyframes warningSpeedometerGlow {
+      0% {
+        box-shadow: 
+          0 0 30px rgba(255,0,0,0.3),
+          inset 0 0 20px rgba(255,255,255,0.1),
+          0 0 60px rgba(255,0,0,0.2);
+      }
+      100% {
+        box-shadow: 
+          0 0 50px rgba(255,0,0,0.5),
+          inset 0 0 25px rgba(255,255,255,0.15),
+          0 0 80px rgba(255,0,0,0.3);
+      }
+    }
+
+    /* Zone labels */
+    .zone-label {
+      position: absolute;
+      font-size: 12px;
+      font-weight: bold;
+      text-shadow: 0 0 5px rgba(0,0,0,0.8);
+    }
+
+    .zone-label.red {
+      color: #ff4444;
+      bottom: 30px;
+      left: 10px;
+    }
+
+    .zone-label.green {
+      color: #44ff44;
+      bottom: 30px;
+      right: 10px;
     }
 
     {% comment %} content end here {% endcomment %}
@@ -138,11 +515,18 @@
       font-weight: bold;
       font-size: 1rem;
       cursor: pointer;
-      transition: background 0.3s ease;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
     }
 
     button:hover {
       background: #2563eb;
+      transform: translateY(-2px);
+      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4);
+    }
+
+    button:active {
+      transform: translateY(0);
     }
 
     .header-logo-wrapper {
@@ -228,110 +612,230 @@
     }
   </style>
 </head>
-<!-- About Button -->
-<button class="about-button" onclick="window.location.href='/about'">About me</button>
+<body>
+  <!-- About Button -->
+  <button class="about-button" onclick="window.location.href='/about'">About me</button>
 
-<!-- Wheel Spinner -->
-<div class="wheel-spinner" id="wheelSpinner"></div>
+  <!-- Racing Stripes -->
+  <div class="racing-stripes" id="racingStripes"></div>
 
-  <body>
+  <!-- Wheel Spinner -->
+  <div class="wheel-spinner" id="wheelSpinner"></div>
+
+  <!-- Loading Text -->
+  <div class="loading-text" id="loadingText">🏎️ ANALYZING RACE DATA...</div>
+
+  <!-- Speedometer -->
+  <div class="speedometer-container" id="speedometerContainer">
+    <div class="confidence-text" id="confidenceText">MODEL CONFIDENCE</div>
+    <div class="speedometer" id="speedometer">
+      <div class="speedometer-arc"></div>
+      <div class="speedometer-needle" id="speedometerNeedle"></div>
+      <div class="speedometer-center"></div>
+      <div class="speedometer-label" id="speedometerLabel">Normal</div>
+      <div class="zone-label red">LOW</div>
+      <div class="zone-label green">HIGH</div>
+    </div>
+  </div>
     
-    <div class="header-logo-wrapper">
-      <div class="header-logo" >
-        <div class="tr-txt-top" id="txt-top1">
-          <p>TEAM RADIO</p>
-        </div>
-        <div class="radio-bars-wrapper">
-          <div class="radio-bar"></div>
-          <div class="radio-bar"></div>
-          <div class="radio-bar"></div>
-          <div class="radio-bar"></div>
-          <div class="radio-bar"></div>
-          <div class="radio-bar"></div>
-          <div class="radio-bar"></div>
-          <div class="radio-bar"></div>
-        </div>
-        <div class="separator-line"></div>
-        <div class="wac-wrapper">
-          <p>"Plan...???"</p>
-        </div>
+  <div class="header-logo-wrapper">
+    <div class="header-logo" >
+      <div class="tr-txt-top" id="txt-top1">
+        <p>TEAM RADIO</p>
+      </div>
+      <div class="radio-bars-wrapper">
+        <div class="radio-bar"></div>
+        <div class="radio-bar"></div>
+        <div class="radio-bar"></div>
+        <div class="radio-bar"></div>
+        <div class="radio-bar"></div>
+        <div class="radio-bar"></div>
+        <div class="radio-bar"></div>
+        <div class="radio-bar"></div>
+      </div>
+      <div class="separator-line"></div>
+      <div class="wac-wrapper">
+        <p>"Plan...???"</p>
       </div>
     </div>
-    <div class="overlay">
-      <h1>Enter Race Details</h1>
-      <form method="post" action="">
-  {% csrf_token %}
+  </div>
+  
+  <div class="overlay" id="mainOverlay">
+    <h1>Enter Race Details</h1>
+    <form method="post" action="" id="predictionForm">
+      {% csrf_token %}
 
-  <label for="driver">Driver:</label>
-  <select name="driver" required>
-    <option value="">Select Driver</option>
-    {% for d in drivers %}
-      <option value="{{ d }}">{{ d }}</option>
-    {% endfor %}
-  </select>
+      <label for="driver">Driver:</label>
+      <select name="driver" required>
+        <option value="">Select Driver</option>
+        {% for d in drivers %}
+          <option value="{{ d }}">{{ d }}</option>
+        {% endfor %}
+      </select>
 
-  <label for="starting_grid">Starting Position:</label>
-  <input type="number" name="starting_grid" placeholder="Starting Grid" min="1" max='20' required />
+      <label for="starting_grid">Starting Position:</label>
+      <input type="number" name="starting_grid" placeholder="Starting Grid" min="1" max='20' required />
 
-  <label for="track">Track:</label>
-  <select name="track" required>
-    <option value="">Select Race Track</option>
-    {% for t in tracks %}
-      <option value="{{ t }}">{{ t }}</option>
-    {% endfor %}
-  </select>
+      <label for="track">Track:</label>
+      <select name="track" required>
+        <option value="">Select Race Track</option>
+        {% for t in tracks %}
+          <option value="{{ t }}">{{ t }}</option>
+        {% endfor %}
+      </select>
 
-  <button type="submit">Predict</button>
-</form>
+      <button type="submit" id="submitButton">Predict</button>
+    </form>
 
-{% if prediction %}
-  <h2 style="margin-top: 2rem;">Predicted Finishing Position: {{ prediction|floatformat:1 }}</h2>
-{% endif %}
+    {% comment %} {% if prediction %}
+      <h2 style="margin-top: 2rem;">Predicted Finishing Position: {{ prediction|floatformat:1 }}</h2>
+    {% endif %} {% endcomment %}
 
-    </div>
+    {% if prediction %}
+      <h1>🏁 Predicted Position: {{ prediction }}</h1>
+      <h2><strong>Model Explanation:</strong></h2>
+      {% for e in explanation %}
+        <p> 🟢 {{ e }}. </p>
+      {% endfor %}
+      {% comment %} {% if confidence %}
+        <p><strong>📊 Confidence:</strong> {{ confidence }}</p>
+      {% endif %} {% endcomment %}
+    {% endif %}
+
+    {% if error %}
+      <p style="color: red;">{{ error }}</p>
+    {% endif %}
+  </div>
+
   <script>
-  const phrases = ["\"Copy that\"", "\"Box, box, box\"", "\"We are checking\"","\"Must be the Water!\"","\"K1 Available\""];
-  const wacWrapper = document.querySelector('.wac-wrapper');
-  let i = 0;
-  let j = 0;
-  let isDeleting = false;
-  let currentText = '';
-  let speed = 100;
+    const phrases = ["\"Copy that\"", "\"Box, box, box\"", "\"We are checking\"","\"Must be the Water!\"","\"K1 Available\""];
+    const wacWrapper = document.querySelector('.wac-wrapper');
+    let i = 0;
+    let j = 0;
+    let isDeleting = false;
+    let currentText = '';
+    let speed = 100;
 
-  function typeLoop() {
-    const fullText = phrases[i];
-    if (isDeleting) {
-      currentText = fullText.substring(0, j--);
-    } else {
-      currentText = fullText.substring(0, j++);
+    function typeLoop() {
+      const fullText = phrases[i];
+      if (isDeleting) {
+        currentText = fullText.substring(0, j--);
+      } else {
+        currentText = fullText.substring(0, j++);
+      }
+
+      wacWrapper.innerHTML = `<p>${currentText}</p>`;
+
+      if (!isDeleting && j === fullText.length + 1) {
+        isDeleting = true;
+        speed = 50;
+        setTimeout(typeLoop, 1000);
+      } else if (isDeleting && j === 0) {
+        isDeleting = false;
+        i = (i + 1) % phrases.length;
+        speed = 100;
+        setTimeout(typeLoop, 500);
+      } else {
+        setTimeout(typeLoop, speed);
+      }
     }
 
-    wacWrapper.innerHTML = `<p>${currentText}</p>`;
-
-    if (!isDeleting && j === fullText.length + 1) {
-      isDeleting = true;
-      speed = 50;
-      setTimeout(typeLoop, 1000);
-    } else if (isDeleting && j === 0) {
-      isDeleting = false;
-      i = (i + 1) % phrases.length;
-      speed = 100;
-      setTimeout(typeLoop, 500);
-    } else {
-      setTimeout(typeLoop, speed);
+    // Speedometer functions
+    function updateSpeedometer(confidenceText) {
+      const speedometer = document.getElementById('speedometer');
+      const speedometerLabel = document.getElementById('speedometerLabel');
+      const speedometerContainer = document.getElementById('speedometerContainer');
+      const needle = document.getElementById('speedometerNeedle');
+      
+      // Show speedometer
+      speedometerContainer.style.display = 'block';
+      
+      // Remove existing confidence classes
+      speedometer.classList.remove('warning', 'normal');
+      
+      // Start needle at neutral position
+      needle.style.transform = 'translateX(-50%) rotate(-90deg)';
+      needle.style.background = 'linear-gradient(to top, #fff 0%, #ffff00 50%, #fff 100%)';
+      
+      // Force a reflow to ensure the initial position is set
+      needle.offsetHeight;
+      
+      setTimeout(() => {
+        // Check if warning emoji is present in confidence text
+        if (confidenceText && confidenceText.includes('⚠️')) {
+          speedometer.classList.add('warning');
+          speedometerLabel.textContent = 'Low Confidence';
+          speedometerLabel.style.color = '#ff4d4d';
+          // Manually trigger needle movement to red zone
+          needle.style.transform = 'translateX(-50%) rotate(-45deg)';
+          needle.style.background = 'linear-gradient(to top, #fff 0%, #ff4444 50%, #fff 100%)';
+        } else {
+          speedometer.classList.add('normal');
+          speedometerLabel.textContent = 'Normal Confidence';
+          speedometerLabel.style.color = '#44ff44';
+          // Manually trigger needle movement to green zone
+          needle.style.transform = 'translateX(-50%) rotate(45deg)';
+          needle.style.background = 'linear-gradient(to top, #fff 0%, #44ff44 50%, #fff 100%)';
+        }
+      }, 800);
     }
-  }
 
-  document.addEventListener('DOMContentLoaded', typeLoop);
-  document.querySelector('form').addEventListener('submit', function (e) {
-  const spinner = document.getElementById('wheelSpinner');
-  spinner.style.display = 'block';
+    {% if prediction %}
+    // Check if confidence exists and update speedometer
+    document.addEventListener('DOMContentLoaded', function() {
+      typeLoop();
+      
+      // Get confidence text from Django template
+      const confidenceText = '{{ confidence|escapejs }}';
+      
+      // Show speedometer if confidence exists (not empty)
+      if (confidenceText && confidenceText.trim() !== '') {
+        updateSpeedometer(confidenceText);
+      }
+    });
+    {% endif %}
 
-  setTimeout(() => {
-    spinner.style.display = 'none';
-  }, 2000); // adjust as needed to match prediction display time
-});
+    document.querySelector('form').addEventListener('submit', function (e) {
+      const spinner = document.getElementById('wheelSpinner');
+      const loadingText = document.getElementById('loadingText');
+      const racingStripes = document.getElementById('racingStripes');
+      const submitButton = document.getElementById('submitButton');
+      const mainOverlay = document.getElementById('mainOverlay');
+      const form = e.target;
+      
+      // Prevent default form submission temporarily
+      e.preventDefault();
+      
+      // Add button press animation
+      submitButton.classList.add('button-pressed');
+      
+      // Show all loading animations immediately
+      spinner.style.display = 'block';
+      loadingText.style.display = 'block';
+      racingStripes.style.display = 'block';
+      
+      // Add form blur effect
+      mainOverlay.classList.add('form-submitting');
+      
+      // Disable the submit button to prevent double submission
+      submitButton.disabled = true;
+      submitButton.textContent = 'Calculating...';
+      submitButton.style.opacity = '0.7';
+      submitButton.style.cursor = 'not-allowed';
+      
+      // Show loading animations, then submit the form
+      setTimeout(() => {
+        // Actually submit the form after the animation
+        form.submit();
+      }, 150);
+    });
 
-</script>
+    // Initialize typing animation on page load
+    {% if not prediction %}
+    document.addEventListener('DOMContentLoaded', function() {
+      typeLoop();
+    });
+    {% endif %}
+  </script>
 </body>
 </html>

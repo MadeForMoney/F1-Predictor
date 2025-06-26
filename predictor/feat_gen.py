@@ -113,7 +113,7 @@ def generate_features_for_inference(driver_name, track_name, starting_grid, race
 
     # IsTopTeam (static based on 2024 known strong performers)
     d_names = [
-        'Max Verstappen', 'Sergio Perez', 'Lando Norris', 'Carlos Sainz',
+        'Max Verstappen', 'Yuki Tsunoda', 'Lando Norris', 'Kimi Antonelli',
         'Charles Leclerc', 'George Russell', 'Lewis Hamilton', 'Oscar Piastri'
     ]
     is_top_team = 1 if driver_name in d_names else 0

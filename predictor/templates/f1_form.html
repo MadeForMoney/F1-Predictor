@@ -662,30 +662,32 @@
   
   <div class="overlay" id="mainOverlay">
     <h1>Enter Race Details</h1>
-    <form method="post" action="" id="predictionForm">
-      {% csrf_token %}
+<form method="post" action="" id="predictionForm">
+  {% csrf_token %}
 
-      <label for="driver">Driver:</label>
-      <select name="driver" required>
-        <option value="">Select Driver</option>
-        {% for d in drivers %}
-          <option value="{{ d }}">{{ d }}</option>
-        {% endfor %}
-      </select>
+  <label for="driver">Driver:</label>
+  <select name="driver" required>
+    <option value="">Select Driver</option>
+    {% for d in drivers %}
+      <option value="{{ d }}" {% if d == request.POST.driver %}selected{% endif %}>{{ d }}</option>
+    {% endfor %}
+  </select>
 
-      <label for="starting_grid">Starting Position:</label>
-      <input type="number" name="starting_grid" placeholder="Starting Grid" min="1" max='20' required />
+  <label for="starting_grid">Starting Position:</label>
+  <input type="number" name="starting_grid" placeholder="Starting Grid" min="1" max="20" 
+         value="{{ request.POST.starting_grid }}" required />
 
-      <label for="track">Track:</label>
-      <select name="track" required>
-        <option value="">Select Race Track</option>
-        {% for t in tracks %}
-          <option value="{{ t }}">{{ t }}</option>
-        {% endfor %}
-      </select>
+  <label for="track">Track:</label>
+  <select name="track" required>
+    <option value="">Select Race Track</option>
+    {% for t in tracks %}
+      <option value="{{ t }}" {% if t == request.POST.track %}selected{% endif %}>{{ t }}</option>
+    {% endfor %}
+  </select>
 
-      <button type="submit" id="submitButton">Predict</button>
-    </form>
+  <button type="submit" id="submitButton">Predict</button>
+</form>
+
 
     {% comment %} {% if prediction %}
       <h2 style="margin-top: 2rem;">Predicted Finishing Position: {{ prediction|floatformat:1 }}</h2>
@@ -764,14 +766,14 @@
         // Check if warning emoji is present in confidence text
         if (confidenceText && confidenceText.includes('⚠️')) {
           speedometer.classList.add('warning');
-          speedometerLabel.textContent = 'Low Confidence';
+          speedometerLabel.textContent = 'Low ⚠️';
           speedometerLabel.style.color = '#ff4d4d';
           // Manually trigger needle movement to red zone
           needle.style.transform = 'translateX(-50%) rotate(-45deg)';
           needle.style.background = 'linear-gradient(to top, #fff 0%, #ff4444 50%, #fff 100%)';
         } else {
           speedometer.classList.add('normal');
-          speedometerLabel.textContent = 'Normal Confidence';
+          speedometerLabel.textContent = 'Normal';
           speedometerLabel.style.color = '#44ff44';
           // Manually trigger needle movement to green zone
           needle.style.transform = 'translateX(-50%) rotate(45deg)';
